@@ -3,9 +3,14 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 @Data
+/*@AllArgsConstructor
+@NoArgsConstructor*/
+
 public class userregister {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +20,14 @@ public class userregister {
     private String firstName;
 
     private String lastName;
+    @Column(unique = true)
+    private String email;
 
+
+    private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<BorrowHistory> borrowHistoryList;
 
     public Long getId() {
         return id;
@@ -23,6 +35,14 @@ public class userregister {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public List<BorrowHistory> getBorrowHistoryList() {
+        return borrowHistoryList;
+    }
+
+    public void setBorrowHistoryList(List<BorrowHistory> borrowHistoryList) {
+        this.borrowHistoryList = borrowHistoryList;
     }
 
     public String getFirstName() {
@@ -57,11 +77,7 @@ public class userregister {
         this.password = password;
     }
 
-    @Column(unique = true)
-    private String email;
 
-
-    private String password;
 
 }
 

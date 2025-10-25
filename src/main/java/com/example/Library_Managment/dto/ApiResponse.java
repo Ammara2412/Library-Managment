@@ -9,7 +9,32 @@ public class ApiResponse {
 
     private String status;
     private String message;
-    private String token; // Add token field
+    private String token;
+    private Long Id; // // Add token field
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Long getId() {
+        return Id;
+    }
+
+    public void setId(Long id) {
+        Id = id;
+    }
 
     public ApiResponse(String status, String message) {
         this.status = status;

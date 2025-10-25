@@ -52,7 +52,7 @@ public class EmailService {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true); // true = supports attachments
 
-            helper.setTo("ammarasaiyed851@gmail.com");  // recipient email
+            helper.setTo("abc231@gmail.com");  // recipient email
             helper.setSubject("Test Mail with PDF");
             helper.setText("Hello! This is a test email from Spring Boot with a PDF attachment.");
 

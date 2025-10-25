@@ -5,7 +5,7 @@ package com.example.Library_Managment.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
+import java.util.List;
 import java.time.LocalDate;
 
 @Data
@@ -24,6 +24,10 @@ public class Book {
     private LocalDate issuedDate;
     private LocalDate dueDate;
     private Long borrowedByUserId; // null if not borrowed
+    private boolean accessRevoked = false;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    private List<BorrowHistory> borrowHistoryList;
 
     public Long getId() {
         return id;
@@ -111,5 +115,12 @@ public class Book {
 
     public String getPdfPath() {
         return pdfpath;
+    }
+    public boolean isAccessRevoked() {
+        return accessRevoked;
+    }
+
+    public void setAccessRevoked(boolean accessRevoked) {
+        this.accessRevoked = accessRevoked;
     }
 }
