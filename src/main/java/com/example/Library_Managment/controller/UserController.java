@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -45,7 +46,21 @@ public class UserController {
     }
 
 
+    @PutMapping("/change-password")
+    public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordRequest request) {
+        userService.changePassword(request);
+        ApiResponse response = new ApiResponse("success", "Password changed successfully");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 
+    //Reset Password Endpoint
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(
+            @Validated @RequestBody ResetPasswordRequwst request) {
+        userregister nu = userService.resetPassword(request);
+        ApiResponse response = new ApiResponse("success","Password reset successfully. New Password is: " + nu.getPassword());
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 
 
 
