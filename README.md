@@ -1,0 +1,133 @@
+# Library Managment: User Management - Backend Project.
+
+  This project is the backend RESTful service built using Spring Boot. It includes  Registration, Login API.
+
+***Table of Contents
+
+Features
+
+Technologies Used
+//new changes test//
+Prerequisites
+
+Installation
+
+ -Running the Project
+
+ -Testing
+
+ -API Documentation
+
+
+**Features
+
+*User Management: Registration, login /.
+
+*Global Exception Handling: Uses @RestControllerAdvice for handling exceptions.
+
+
+**Technologies Used
+
+-Spring Boot (Java)
+
+-JPA/Hibernate (for ORM)
+
+-MySQL (as the data store)
+
+-Swagger/OpenAPI (for API documentation)
+
+-JUnit and Mockito (for unit and integration testing)
+
+-Maven (for build automation)
+
+
+**Prerequisites
+
+Before running the project, ensure the following should be installed:
+
+-Java 17 or above
+
+-IntelliJ IDEA (Ultimate or Community Edition)
+
+-Maven 4.0.0 (or higher version than 3.6)
+
+-MySQL (or any other database)
+
+-Git (for version control)
+
+**Installation
+
+1. Clone the Repository
+
+https://github.com/Ammara2412/Library-Managment.git
+
+-Open IntelliJ IDEA.
+
+-Navigate to File → New → Project from Version Control.
+
+-From the drop down box choose Git and paste the repository URL:
+
+
+2. Open the Project in IntelliJ
+
+Once the project is cloned:
+IntelliJ will automatically detect it as a Maven project and start importing dependencies. If not, click the notification at the bottom right that says "Import Maven projects."
+Wait for IntelliJ to download all the necessary dependencies from Maven. You should see a message in the Event Log when the import is complete.
+
+
+3. Configure the Database
+
+-Navigate to src/main/resources/application.properties (or application.yml) and update the database credentials:
+
+properties-
+
+While running application in local server use - 
+spring.profiles.active=local
+
+Running application remotely -
+spring.profiles.active=test
+
+spring.datasource.url=jdbc:mysql://mysql-container:3306/library_db
+spring.datasource.username=root
+spring.datasource.password=root@123
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+
+-Make sure that the MySQL server is running, and the database library_db is created. You have to create the database manually using MySQL Workbench or command line:
+
+CREATE DATABASE library_db;
+
+
+4. Build the Project
+
+Open the Maven Tool Window from the right sidebar or navigate to View → Tool Windows → Maven.
+In the Maven window, expand your project folder.
+Under Lifecycle, double-click on clean and install. This will clean any previous builds and install the necessary dependencies.
+
+
+5. Run the Project
+
+Open the LibraryManagment.java file located in src/main/java/com/exam/ninja/LibraryManagmentApplication.java.
+
+Right-click on the file and choose Run 'ExamNinjaApplication'.
+
+IntelliJ will start the application, and you should see the Spring Boot banner in the Run window.
+
+
+6. Access the Application
+
+-Once the application starts, you can access it in your browser:
+
+http://localhost:8081
+
+7. Run the Tests
+
+To run tests:
+
+Go to src/test directory.
+
+You can right-click on individual test classes or methods and choose Run to run specific tests.
+
+8. For Manual Tests.
+
+ -Use PostMan

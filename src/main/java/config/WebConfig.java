@@ -22,10 +22,12 @@ public class WebConfig implements WebMvcConfigurer {
         // ✅ If needed, you can use filesystem-based path
         registry.addResourceHandler("/static/Romance/**")
                 .addResourceLocations("classpath:/static/Romance/");
-        registry.addResourceHandler("/Fantasy/**")
-                .addResourceLocations("classpath:/static/Fantasy/");
+        registry.addResourceHandler("/Fiction/**")
+                .addResourceLocations("classpath:/static/Fiction/");
         registry.addResourceHandler("/Thriller/**")
                 .addResourceLocations("classpath:/static/Thriller/");
+        registry.addResourceHandler("/Mystery/**")
+                .addResourceLocations("classpath:/static/Mystery/");
     }
 }
 

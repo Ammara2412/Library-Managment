@@ -33,14 +33,12 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
-
     // Extract username from token
     public String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
     }
 
     // Extract userId from token
-
     public Long extractUserId(String token) {
         Object userIdObj = extractAllClaims(token).get("userId");
         if (userIdObj instanceof Number) {
@@ -52,18 +50,6 @@ public class JwtUtil {
         }
     }
 
-
-    /*public Long extractUserId(String token) {
-        Object userIdObj = extractAllClaims(token).get("userId"); // Retrieve userId from claims
-
-        // Ensure userId is not null before casting
-        if (userIdObj instanceof Number) {
-            return ((Number) userIdObj).longValue(); // Convert to Long
-        } else {
-            throw new IllegalArgumentException("signing key cannot be null or empty.");
-        }
-        //User ID is not a valid number.--replaced with -- signing key cannot be null or empty
-    }*/
 
     // Extract all claims from token
     Claims extractAllClaims(String token) {
@@ -84,3 +70,20 @@ public class JwtUtil {
         return extractAllClaims(token).getExpiration().before(new Date());
     }
 }
+
+
+
+
+
+
+  /*public Long extractUserId(String token) {
+        Object userIdObj = extractAllClaims(token).get("userId"); // Retrieve userId from claims
+
+        // Ensure userId is not null before casting
+        if (userIdObj instanceof Number) {
+            return ((Number) userIdObj).longValue(); // Convert to Long
+        } else {
+            throw new IllegalArgumentException("signing key cannot be null or empty.");
+        }
+        //User ID is not a valid number.--replaced with -- signing key cannot be null or empty
+    }*/

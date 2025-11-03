@@ -42,11 +42,6 @@ public class BookController {
     }
 
 
-   /* @GetMapping("/search")
-    public List<Book> searchBooks(@RequestParam("keyword") String keyword) {
-        return bookService.searchBooks(keyword);
-    }*/
-
     @GetMapping("/search")
     public ResponseEntity<?> searchBooks(@RequestParam(required = false) String keyword) {
         List<Book> results = bookService.searchBooks(keyword);
@@ -71,7 +66,23 @@ public class BookController {
 
     }
 
-    @GetMapping("/download/{bookId}")
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Currntly not needed,
+
+ /* @GetMapping("/download/{bookId}")
     public ResponseEntity<?> downloadBook(@PathVariable Long bookId, @RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
         Long userId = jwtUtil.extractUserId(token);
@@ -110,32 +121,9 @@ public class BookController {
                     .body(Map.of("message", "Error while downloading file"));
         }
     }
+*/
 
 
-   /* @PostMapping("/renew/{bookId}")
-    public ResponseEntity<?> renewBook(@PathVariable Long bookId, @RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.substring(7);
-        Long userId = jwtUtil.extractUserId(token);
-
-        Book book = bookRepository.findById(bookId)  // ✅ use lowercase 'bookRepository'
-                .orElseThrow(() -> new RuntimeException("Book not found"));
-
-        if (!book.getBorrowedByUserId().equals(userId)) {
-            return ResponseEntity.status(403).body(Map.of("message", "You didn’t borrow this book."));
-        }
-
-        // Reset due date
-        book.setDueDate(LocalDate.now().plusDays(7));
-        book.setAccessRevoked(false);
-        bookRepository.save(book);
-
-        return ResponseEntity.ok(Map.of("message", "Book renewed until " + book.getDueDate()));
-    }*/
-
-
-
-
-}
 
 
 

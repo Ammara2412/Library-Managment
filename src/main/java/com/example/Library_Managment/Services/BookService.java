@@ -22,30 +22,29 @@ import java.util.List;
 
 @Service
 public class BookService {
-
     @Autowired
     private BookRepository bookRepository;
     @Autowired
-    private UserRepository userRepository; // ✅ Inject repository here
+    private UserRepository userRepository;
     @Autowired
     private BorrowHistoryRepository borrowHistoryRepository;
-
     @Autowired
     private JavaMailSender mailSender;
-
     @Autowired
-    private JwtUtil jwtUtil; // ✅ Inject JwtUtil to extract email & userId from token
+    private JwtUtil jwtUtil;
 
-    /**
-     * Fetch all books
-     */
+    //Fetch all books
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
-
-    /**
-     * Borrow a book using JWT token
-     */
+    //Search books by authirname,bookname,genre
+    public List<Book> searchBooks(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return bookRepository.findAll(); // if no keyword, return all books
+        }
+        return bookRepository.searchBooks(keyword);
+    }
+    // Borrow a book using JWT token
     public String borrowBook(Long bookId, String token) {
         // ✅ Extract user info from token
         String userEmail = jwtUtil.extractUsername(token);
@@ -81,34 +80,10 @@ public class BookService {
         return "Book borrowed successfully!";
     }
 
-    //Optional
-    public void returnBook(Long bookId, Long userId) {
-        Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new RuntimeException("Book not found"));
-        userregister user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        // Find active borrow history
-        BorrowHistory history = borrowHistoryRepository.findByUser(user).stream()
-                .filter(h -> h.getBook().getId().equals(bookId) && h.getStatus() == BorrowHistory.Status.BORROWED)
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("No active borrow record found"));
-
-        // Update history
-        history.setReturnDate(LocalDate.now());
-        history.setStatus(BorrowHistory.Status.RETURNED);
-        borrowHistoryRepository.save(history);
-
-        // Update book
-        book.setBorrowed(false);
-        book.setBorrowedByUserId(null);
-        bookRepository.save(book);
-    }
 
 
-    /**
-     * Send borrow confirmation email with PDF attachment
-     */
+    // Send borrow confirmation email with PDF attachment
+
 
     private void sendBorrowEmail(String email, Book book) {
         try {
@@ -157,43 +132,19 @@ public class BookService {
             throw new RuntimeException("Failed to send borrow email: " + e.getMessage(), e);
         }
     }
-
-
-   /* *//**
-     * Daily scheduled reminder email for due date
-     *//*
-    @Scheduled(cron = "0 0 9 * * ?") // Every day at 9:00 AM
+    @Scheduled(cron = "0 0 9 * * ?") // every day at 9 AM
     public void sendDueDateReminders() {
-        List<Book> borrowedBooks = bookRepository.findAll().stream()
-                .filter(Book::isBorrowed)
-                .filter(book -> LocalDate.now().isEqual(book.getDueDate()))
-                .toList();
+        List<Book> borrowedBooks = bookRepository.findAll();
 
         for (Book book : borrowedBooks) {
-            sendReminderEmail(book.getBorrowedByUserId(), book);
-        }
-    }*/
-
-    @Scheduled(cron = "0 0 0 * * ?") // runs daily at midnight
-    public void revokeAccessForOverdueBooks() {
-        List<Book> allBooks = bookRepository.findAll();
-        LocalDate today = LocalDate.now();
-
-        for (Book book : allBooks) {
-            if (book.isBorrowed() && book.getDueDate() != null
-                    && today.isAfter(book.getDueDate())
-                    && !book.isAccessRevoked()) {
-
-                // revoke access
-                book.setAccessRevoked(true);
-                bookRepository.save(book);
-
-                // notify the user
-                sendAccessRevokedEmail(book);
+            if (book.isBorrowed() && book.getDueDate() != null) {
+                LocalDate today = LocalDate.now();
+                if (today.plusDays(1).isEqual(book.getDueDate())) {
+                    sendReminderEmail(book.getBorrowedByUserId(), book);
+                }
             }
         }
     }
-
 
     private void sendReminderEmail(Long userId, Book book) {
         try {
@@ -221,7 +172,26 @@ public class BookService {
 
     }
 
-    private void sendAccessRevokedEmail(Book book) {
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Not required for now.
+
+/*    private void sendAccessRevokedEmail(Book book) {
         try {
             userregister user = userRepository.findById(book.getBorrowedByUserId())
                     .orElseThrow(() -> new RuntimeException("User not found"));
@@ -244,16 +214,32 @@ public class BookService {
         }
     }
 
-       public List<Book> searchBooks(String keyword) {
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return bookRepository.findAll(); // if no keyword, return all books
-        }
-        return bookRepository.searchBooks(keyword);
+    public void returnBook(Long bookId, Long userId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+        userregister user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Find active borrow history
+        BorrowHistory history = borrowHistoryRepository.findByUser(user).stream()
+                .filter(h -> h.getBook().getId().equals(bookId) && h.getStatus() == BorrowHistory.Status.BORROWED)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No active borrow record found"));
+
+        // Update history
+        history.setReturnDate(LocalDate.now());
+        history.setStatus(BorrowHistory.Status.RETURNED);
+        borrowHistoryRepository.save(history);
+
+        // Update book
+        book.setBorrowed(false);
+        book.setBorrowedByUserId(null);
+        bookRepository.save(book);
     }
-}
 
 
 
+    */
 
 
 
