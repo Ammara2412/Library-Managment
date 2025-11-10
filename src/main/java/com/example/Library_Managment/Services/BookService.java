@@ -29,15 +29,15 @@ public class BookService {
     @Autowired
     private BorrowHistoryRepository borrowHistoryRepository;
     @Autowired
-    private JavaMailSender mailSender;
+    private JavaMailSender mailSender; // Injects Spring Mail Sednder to send mail.
     @Autowired
-    private JwtUtil jwtUtil;
+    private JwtUtil jwtUtil; //Injects helper that exctracts claims from JWT token.
 
     //Fetch all books
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
-    //Search books by authirname,bookname,genre
+    //Search books by author-name,book-name,genre
     public List<Book> searchBooks(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             return bookRepository.findAll(); // if no keyword, return all books
@@ -46,9 +46,9 @@ public class BookService {
     }
     // Borrow a book using JWT token
     public String borrowBook(Long bookId, String token) {
-        // ✅ Extract user info from token
+        //  Extract user info from token
         String userEmail = jwtUtil.extractUsername(token);
-        Long userId = jwtUtil.extractUserId(token); // You’ll need to implement this in JwtUtil if not already done
+        Long userId = jwtUtil.extractUserId(token); //
 
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
@@ -75,7 +75,7 @@ public class BookService {
         history.setDueDate(LocalDate.now().plusDays(14));
         history.setStatus(BorrowHistory.Status.BORROWED);
         borrowHistoryRepository.save(history);
-        // ✅ Send confirmation email with book details and attached PDF
+        // Send confirmation email with book details and attached PDF
         sendBorrowEmail(userEmail, book);
         return "Book borrowed successfully!";
     }

@@ -12,11 +12,9 @@ import java.util.List;
 public class BorrowHistoryController {
 
     private final BorrowHistoryService borrowHistoryService;
-
     public BorrowHistoryController(BorrowHistoryService borrowHistoryService) {
         this.borrowHistoryService = borrowHistoryService;
     }
-
     @GetMapping("/{userId}")
     public List<BorrowHistoryDTO> getUserHistory(@PathVariable Long userId) {
         return borrowHistoryService.getUserBorrowHistory(userId);

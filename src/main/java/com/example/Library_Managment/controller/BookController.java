@@ -26,7 +26,6 @@ import java.util.Map;
 @RequestMapping("/api/books")
 @CrossOrigin
 public class BookController {
-
     @Autowired
     private BookService bookService;
     @Autowired
@@ -38,7 +37,7 @@ public class BookController {
 
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks() {
-        return ResponseEntity.ok(bookService.getAllBooks());
+         return ResponseEntity.ok(bookService.getAllBooks());
     }
 
 
@@ -49,7 +48,6 @@ public class BookController {
         if (results.isEmpty()) {
             return ResponseEntity.ok(Map.of("message", "No results found", "data", results));
         }
-
         return ResponseEntity.ok(Map.of("message", "Books found", "data", results));
     }
 
@@ -58,12 +56,11 @@ public class BookController {
     public ResponseEntity<?> borrowBook(
             @PathVariable Long bookId,
             @RequestHeader("Authorization") String authHeader
-    ) {
+    )
+    {
         String token = authHeader.substring(7); // remove "Bearer "
         String message = bookService.borrowBook(bookId, token);
         return ResponseEntity.ok(Map.of("message", message));
-
-
     }
 
 }

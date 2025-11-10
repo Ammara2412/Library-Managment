@@ -35,6 +35,7 @@ public class JwtUtil {
     }
     // Extract username from token
     public String extractUsername(String token) {
+
         return extractAllClaims(token).getSubject();
     }
 
@@ -67,6 +68,7 @@ public class JwtUtil {
 
     // Check if token is expired
     public Boolean isTokenExpired(String token) {
+
         return extractAllClaims(token).getExpiration().before(new Date());
     }
 }
